@@ -19,13 +19,13 @@ Then the details will collapse and the event card will get back to it’s origin
 FEATURE 3: SPECIFY NUMBER OF EVENTS <br>
 User story: as a user, I should be able to specify how many events I want to see, so that I can manage how many events I want to see <br>
 Scenario 1: When user hasn’t specified a number, 32 is the default number.<br>
-Given a user has chosen the city they want to see events for <br>
-When the user doesn’t specify a number of events they want to view<br>
+Given the user has not specified the number of events they want to see <br>
+When the user searches event near a location <br>
 Then 32 events will be displayed<br>
 Scenario 2: User can change the number of events they want to see.<br>
 Given a user has chosen the city they want to see events for<br>
 When they click the dropdown<br>
-Then they will be able to choose the number of events they can see at once<br>
+Then the according number of events will load for the respective city<br>
 FEATURE 4: USE THE APP WHEN OFFLINE<br>
 User story:as a user, I should be able to use the app offline, so that I can check events even when not connected.<br>
 Scenario 1: Show cached data when there’s no internet connection.<br>
@@ -35,7 +35,7 @@ Then the previous data will still be available to them<br>
 Scenario 2: Show error when user changes the settings (city, time range).<br>
 Given the user is offline <br>
 When the user tries to change the information shown<br>
-Then they will get an error message<br>
+Then an error will be shown <br>
 FEATURE 5: DATA VISUALIZATION<br>
 User story: As a user, I should be able to see charts showing dates of events so that I can quickly find events in the time range that interest me. <br>
 Scenario 1: Show a chart with the number of upcoming events in each city.<br>
