@@ -2,10 +2,17 @@
   "name": "meet",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://MiranValincic.github.io/meet",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+<<<<<<< Updated upstream
+=======
+    "atatus-spa": "^4.4.1",
+    "axios": "^0.26.1",
+    "nprogress": "^0.2.0",
+>>>>>>> Stashed changes
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-scripts": "5.0.1",
@@ -26,8 +33,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --coverage --watchAll",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -46,5 +55,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
+    "enzyme": "^3.11.0",
+    "gh-pages": "^3.2.3"
   }
 }
