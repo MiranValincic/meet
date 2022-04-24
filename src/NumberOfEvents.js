@@ -7,32 +7,29 @@ class NumberOfEvents extends Component {
     numberOfEvents: 32,
   };
 
-  handleInputChanged = (event) => {
-    const value = event.target.value;
-
-    if (value <= 0 || value > 32) {
+  handleInputChange = (event) => {
+    if (event.target.value >= 33 || event.target.value <= 0) {
       this.setState({
-        numberOfEvents: "",
-        infoText: "Please enter a number from 1 to 32",
+        numberOfEvents: event.target.value,
+        infoText: "Specified number is not allowed",
       });
     } else {
       this.setState({
-        numberOfEvents: value,
+        numberOfEvents: event.target.value,
         infoText: "",
       });
     }
-    this.props.updateNumberOfEvents(value);
+    this.props.updateNumberOfEvents(event.target.value);
   };
 
   render() {
     return (
-      <div className="NumberOfEvents">
-        <p className="numbercount">Number of events</p>
+      <div className="numberOfEvents">
         <input
           type="number"
           className="numberinput"
-          onChange={this.handleInputChanged}
           value={this.state.numberOfEvents}
+          onChange={this.handleInputChange}
         />
       </div>
     );
