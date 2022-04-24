@@ -1,12 +1,14 @@
 /** @format */
 
 import React, { Component } from "react";
+import { InfoAlert } from "./Alert";
 
 class CitySearch extends Component {
   state = {
     query: "",
     suggestions: [],
     showSuggestions: undefined,
+    infoText: "",
   };
   handleInputChanged = (event) => {
     const value = event.target.value;
@@ -32,13 +34,15 @@ class CitySearch extends Component {
     this.setState({
       query: suggestion,
       showSuggestions: false,
+      infoText: "",
     });
 
-    this.props.updateEvents(suggestion);
+    this.props.updateEvents(suggestion, undefined);
   };
   render() {
     return (
       <div className="CitySearch">
+        <InfoAlert id="infoAlert" text={this.state.infoText} />
         <input
           type="text"
           className="city"
