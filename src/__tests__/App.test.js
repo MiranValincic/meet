@@ -69,6 +69,7 @@ describe("<App /> integration", () => {
     expect(AppWrapper.state("events")).toEqual(allEvents);
     AppWrapper.unmount();
   });
+
   test("the default value of number of events shall be 32", () => {
     let AppWrapper = mount(<App />);
     expect(AppWrapper.state("numberOfEvents")).toBe(32);
