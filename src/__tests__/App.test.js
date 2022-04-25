@@ -69,11 +69,20 @@ describe("<App /> integration", () => {
     expect(AppWrapper.state("events")).toEqual(allEvents);
     AppWrapper.unmount();
   });
-  test("Passing the number of events (32 events)", () => {
-    const AppWrapper = mount(<App />);
-    const AppNumberOfEventsState = AppWrapper.state("numberOfEvents");
-    expect(AppNumberOfEventsState).not.toEqual(undefined);
-    expect(AppWrapper.find(EventList).props().numberOfEvents).toEqual(32);
+
+  test("the default value of number of events shall be 32", () => {
+    let AppWrapper = mount(<App />);
+    expect(AppWrapper.state("numberOfEvents")).toBe(32);
+    AppWrapper.unmount();
+  });
+  test("the state of number of events shall be updated, when the number input changes", () => {
+    let AppWrapper = mount(<App />);
+    const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+    const eventObject = { target: { value: 16 } };
+    NumberOfEventsWrapper.find(".numberinput")
+      .at(0)
+      .simulate("change", eventObject);
+    expect(AppWrapper.state("numberOfEvents")).toBe(16);
     AppWrapper.unmount();
   });
 });
