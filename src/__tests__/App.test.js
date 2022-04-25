@@ -84,4 +84,31 @@ describe("<App /> integration", () => {
     expect(AppWrapper.state("numberOfEvents")).toBe(16);
     AppWrapper.unmount();
   });
+  test("when number of events set by user is HIGHER than the number of available events, show all available events", async () => {
+    let AppWrapper = mount(<App />);
+    const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+    const eventObject = { target: { value: 5 } };
+    NumberOfEventsWrapper.find(".numberinput")
+      .at(0)
+      .simulate("change", eventObject);
+    await getEvents();
+    AppWrapper.update();
+    const EventListWrapper = AppWrapper.find(EventList);
+    expect(AppWrapper.state("events")).toHaveLength(2);
+    expect(EventListWrapper.props().events).toHaveLength(2);
+    AppWrapper.unmount();
+  });
+
+  test("when number of events set by user is LOWER than the number of available events, show all available events", async () => {
+    let AppWrapper = mount(<App />);
+    const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+    const eventObject = { target: { value: 1 } };
+    NumberOfEventsWrapper.find(".numberinput").simulate("change", eventObject);
+    await getEvents();
+    AppWrapper.update();
+    const EventListWrapper = AppWrapper.find(EventList);
+    expect(AppWrapper.state("events")).toHaveLength(1);
+    expect(EventListWrapper.props().events).toHaveLength(1);
+    AppWrapper.unmount();
+  });
 });
