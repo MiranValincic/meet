@@ -10,7 +10,7 @@ class NumberOfEvents extends Component {
   handleInputChange = (event) => {
     if (event.target.value >= 33 || event.target.value <= 0) {
       this.setState({
-        numberOfEvents: event.target.value,
+        numberOfEvents: "",
         infoText: "Specified number is not allowed",
       });
     } else {
@@ -28,8 +28,8 @@ class NumberOfEvents extends Component {
         <input
           type="number"
           className="numberinput"
-          value={this.state.numberOfEvents}
           onChange={this.handleInputChange}
+          value={this.state.numberOfEvents}
         />
       </div>
     );

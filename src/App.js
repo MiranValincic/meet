@@ -29,14 +29,14 @@ class App extends Component {
     this.mounted = false;
   }
 
-  updateNumberOfEvents = (number) => {
+  updateNumberOfEvents = (numberOfEvents) => {
     this.setState({
-      numberOfEvents: number,
+      numberOfEvents,
     });
-    this.updateEvents(this.state.currentLocation, number);
+    this.updateEvents(this.state.currentLocation, numberOfEvents);
   };
 
-  updateEvents = (location, eventCount = this.state.numberOfEvents) => {
+  updateEvents = (location, eventCount) => {
     getEvents().then((events) => {
       const locationEvents =
         location === "all"
@@ -44,8 +44,9 @@ class App extends Component {
           : events.filter((event) => event.location === location);
       if (this.mounted) {
         this.setState({
-          events: locationEvents.slice(0, eventCount),
+          events: locationEvents.slice(0, this.state.numberOfEvents),
           currentLocation: location,
+          numberOfEvents: eventCount,
         });
       }
     });
