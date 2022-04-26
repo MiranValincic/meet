@@ -69,11 +69,58 @@ describe("<App /> integration", () => {
     expect(AppWrapper.state("events")).toEqual(allEvents);
     AppWrapper.unmount();
   });
-  test("Passing the number of events (32 events)", () => {
-    const AppWrapper = mount(<App />);
-    const AppNumberOfEventsState = AppWrapper.state("numberOfEvents");
-    expect(AppNumberOfEventsState).not.toEqual(undefined);
-    expect(AppWrapper.find(EventList).props().numberOfEvents).toEqual(32);
+  test("the default value of number of events shall be 32", () => {
+    let AppWrapper = mount(<App />);
+    expect(AppWrapper.state("numberOfEvents")).toBe(32);
+    AppWrapper.unmount();
+  });
+  test("the state of number of events shall be updated, when the number input changes", () => {
+    let AppWrapper = mount(<App />);
+    const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+    const eventObject = { target: { value: 16 } };
+    NumberOfEventsWrapper.find(".numberinput")
+      .at(0)
+      .simulate("change", eventObject);
+    expect(AppWrapper.state("numberOfEvents")).toBe(16);
+    AppWrapper.unmount();
+  });
+  test("when number of events set by user is HIGHER than the number of available events, show all available events", async () => {
+    let AppWrapper = mount(<App />);
+    const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+    const eventObject = { target: { value: 33 } };
+    NumberOfEventsWrapper.find(".numberinput")
+      .at(0)
+      .simulate("change", eventObject);
+    await getEvents();
+    AppWrapper.update();
+    const EventListWrapper = AppWrapper.find(EventList);
+    expect(AppWrapper.state("events")).toHaveLength(2);
+    expect(EventListWrapper.props().events).toHaveLength(2);
+    AppWrapper.unmount();
+  });
+
+  test("when number of events set by user is LOWER than the number of available events, show all available events", async () => {
+    let AppWrapper = mount(<App />);
+    const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+    const eventObject = { target: { value: 0 } };
+    NumberOfEventsWrapper.find(".numberinput").simulate("change", eventObject);
+    await getEvents();
+    AppWrapper.update();
+    const EventListWrapper = AppWrapper.find(EventList);
+    expect(AppWrapper.state("events")).toHaveLength(0);
+    expect(EventListWrapper.props().events).toHaveLength(0);
+    AppWrapper.unmount();
+  });
+  test("when City Search is set by user to ''", async () => {
+    let AppWrapper = mount(<App />);
+    const CitySearchWrapper = AppWrapper.find(CitySearch);
+    const eventObject = { target: { value: "" } };
+    CitySearchWrapper.find(".city").simulate("change", eventObject);
+    await getEvents();
+    AppWrapper.update();
+    const EventListWrapper = AppWrapper.find(EventList);
+    expect(AppWrapper.state("events")).toHaveLength(2);
+    expect(EventListWrapper.props().events).toHaveLength(2);
     AppWrapper.unmount();
   });
 });
