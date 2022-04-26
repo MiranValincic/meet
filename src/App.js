@@ -86,16 +86,18 @@ class App extends Component {
     return data;
   };
   render() {
-    const { locations, numberOfEvents } = this.state;
     if (this.state.showWelcomeScreen === undefined)
       return (
         <div className="App">
           <h1>Meet App</h1>
           <h4>Choose your nearest city</h4>
           <OfflineAlert text={this.state.offlineText} />
-          <CitySearch locations={locations} updateEvents={this.updateEvents} />
+          <CitySearch
+            locations={this.state.locations}
+            updateEvents={this.updateEvents}
+          />
           <NumberOfEvents
-            numberOfEvents={numberOfEvents}
+            numberOfEvents={this.state.numberOfEvents}
             updateNumberOfEvents={this.updateNumberOfEvents}
           />
           <h4>Events in each city</h4>
@@ -103,12 +105,12 @@ class App extends Component {
           <ResponsiveContainer height={400}>
             <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
               <CartesianGrid />
-              <XAxis type="category" dataKey="city" name="city" />
+              <XAxis type="category" dataKey="city" name="City" />
               <YAxis
                 allowDecimals={false}
                 type="number"
                 dataKey="number"
-                name="number of events"
+                name="Number of events"
               />
               <Tooltip cursor={{ strokeDasharray: "3 3" }} />
               <Scatter data={this.getData()} fill="#8884d8" />
