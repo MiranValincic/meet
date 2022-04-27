@@ -27,23 +27,40 @@ class App extends Component {
     numberOfEvents: 32,
     currentLocation: "all",
     showWelcomeScreen: undefined,
+    warningText: "",
   };
 
   async componentDidMount() {
     this.mounted = true;
-    const accessToken = localStorage.getItem("access_token");
-    const isTokenValid = (await checkToken(accessToken)).error ? false : true;
-    const searchParams = new URLSearchParams(window.location.search);
-    const code = searchParams.get("code");
-    this.setState({ showWelcomeScreen: !(code || isTokenValid) });
-    if ((code || isTokenValid) && this.mounted) {
+    if (
+      navigator.onLine &&
+      !window.location.href.startsWith("http://localhost")
+    ) {
+      const accessToken = localStorage.getItem("access_token");
+      const isTokenValid = (await checkToken(accessToken)).error ? false : true;
+      const searchParams = new URLSearchParams(window.location.search);
+      const code = searchParams.get("code");
+      this.setState({ showWelcomeScreen: !(code || isTokenValid) });
+      if ((code || isTokenValid) && this.mounted) {
+        getEvents().then((events) => {
+          if (this.mounted) {
+            this.setState({
+              events,
+              locations: extractLocations(events),
+              warningText: "",
+            });
+          }
+        });
+      }
+    } else {
       getEvents().then((events) => {
         if (this.mounted) {
-          this.setState({ events, locations: extractLocations(events) });
-        }
-        if (!navigator.onLine) {
           this.setState({
-            infoText: "You are offline, data may not be accurate",
+            events,
+            locations: extractLocations(events),
+            warningText:
+              "You are offline. The displayed event list may not be up to date.",
+            showWelcomeScreen: false,
           });
         }
       });
@@ -93,7 +110,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <OfflineAlert text={this.state.offlineText} />
+        <OfflineAlert text={this.state.warningText} />
         <h1>Meet App</h1>
         <p>Choose a city</p>
         <CitySearch
@@ -102,7 +119,6 @@ class App extends Component {
         />
         <p>Displayed number of events:</p>
         <NumberOfEvents updateNumberOfEvents={this.updateNumberOfEvents} />
-
         <div className="data-vis-wrapper">
           <EventGenre events={this.state.events} />
           <ResponsiveContainer height={400}>
